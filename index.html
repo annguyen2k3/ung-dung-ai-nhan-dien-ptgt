@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng dụng nhận diện phương tiện giao thông bằng AI</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS tùy chỉnh -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <!-- COCO-SSD -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@latest/dist/coco-ssd.min.js"></script>
+</head>
+
+<body>
+    <!-- Overlay loading -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Đang tải mô hình...</p>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Ứng dụng nhận diện phương tiện giao thông bằng AI</h1>
+        <div class="d-flex gap-2 align-items-center">
+            <p class="fs-6 small mb-0">
+                Phương tiện giao thông có thể phân loại:
+            </p>
+            <button class="btn btn-primary btn-sm">Xe đạp</button>
+            <button class="btn btn-primary btn-sm">Xe hơi</button>
+            <button class="btn btn-primary btn-sm">Xe máy</button>
+            <button class="btn btn-primary btn-sm">Xe tải</button>
+            <button class="btn btn-primary btn-sm">Xe buýt</button>
+            <button class="btn btn-primary btn-sm">Máy bay</button>
+            <button class="btn btn-primary btn-sm">Tàu hỏi</button>
+            <button class="btn btn-primary btn-sm">Thuyền</button>
+
+        </div>
+
+        <!-- Phần chọn ảnh -->
+        <div class="row mb-4 mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <label for="imageInput" class="form-label">Nhập vào đây để chọn ảnh hoặc kéo thả ảnh vào ô
+                            này</label>
+                        <input type="file" id="imageInput" class="form-control" accept="image/*">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center" style="min-height: 200px;">
+                        <img id="previewImage" class="img-fluid" style="max-height: 200px;" alt="Ảnh xem trước">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút phân tích -->
+        <div class="text-center mb-4">
+            <button id="analyzeButton" class="btn btn-primary">Phân tích</button>
+        </div>
+
+        <!-- Kết quả phân tích -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Kết quả phân tích</h5>
+                <div class="position-relative">
+                    <canvas id="outputCanvas" class="img-fluid w-100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript tùy chỉnh -->
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
