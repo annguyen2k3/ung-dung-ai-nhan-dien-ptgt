@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewImage = document.getElementById("previewImage");
     const analyzeButton = document.getElementById("analyzeButton");
     const outputCanvas = document.getElementById("outputCanvas");
+    const vehicleCountResult = document.getElementById("vehicleCountResult"); // Phần hiển thị kết quả đếm
     let model;
+    
 
     // Tải mô hình COCO-SSD khi trang web khởi động
     async function loadModel() {
@@ -107,7 +109,45 @@ document.addEventListener("DOMContentLoaded", () => {
                     ); // Hiển thị trong ô, góc trên bên trái
                 }
             });
+                        // Đếm số lượng từng loại phương tiện
+            const vehicleCount = {};
+            trafficClasses.forEach((vehicle) => {
+                vehicleCount[vehicle] = 0; // Khởi tạo số lượng ban đầu là 0
+            });
 
+            predictions.forEach((prediction) => {
+                if (trafficClasses.includes(prediction.class)) {
+                    const [x, y, width, height] = prediction.bbox;
+
+                    // Vẽ khung đỏ xung quanh phương tiện
+                    ctx.strokeStyle = "red";
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x, y, width, height);
+
+                    // Hiển thị tên phương tiện bên trong khung, góc trên bên trái
+                    ctx.fillStyle = "red";
+                    ctx.font = "16px Arial";
+                    ctx.fillText(
+                        classToVietnamese[prediction.class] || prediction.class,
+                        x + 5,
+                        y + 20
+                    );
+
+                    // Tăng số lượng phương tiện
+                    vehicleCount[prediction.class]++;
+                }
+            });
+
+            // Hiển thị kết quả đếm số lượng phương tiện
+            let countHTML = "<ul>";
+            for (const [vehicle, count] of Object.entries(vehicleCount)) {
+                if (count > 0) {
+                    countHTML += `<li>${classToVietnamese[vehicle] || vehicle}: ${count}</li>`;
+                }
+            }
+            countHTML += "</ul>";
+            vehicleCountResult.innerHTML = countHTML;
+            
             // Cuộn trang xuống cuối sau khi phân tích xong
             window.scrollTo({
                 top: document.body.scrollHeight,
